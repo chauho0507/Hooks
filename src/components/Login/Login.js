@@ -1,8 +1,11 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useContext } from 'react';
+
+import AuthContext from '../../store/auth-context';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
 import Input from '../UI/Input/Input';
+
 import classes from './Login.module.css';
 
 const initialState = {
@@ -52,9 +55,10 @@ const inputReducer = (state, action) => {
   return initialState;
 };
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [inputState, dispatchInput] = useReducer(inputReducer, initialState);
   const { emailIsValid, passwordIsValid } = inputState;
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -86,7 +90,7 @@ const Login = ({ onLogin }) => {
 
   const submitHandler = event => {
     event.preventDefault();
-    onLogin(inputState.email, inputState.password);
+    authCtx.onLogin(inputState.email, inputState.password);
   };
 
   return (
@@ -96,7 +100,7 @@ const Login = ({ onLogin }) => {
           label="E-mail"
           id="email"
           type="email"
-          emailIsValid={inputState.emailIsValid}
+          isValid={inputState.emailIsValid}
           value={inputState.email}
           onChange={emailChangeHandler}
           onBlur={validateEmailHandler}
@@ -105,7 +109,7 @@ const Login = ({ onLogin }) => {
           label="Password"
           id="password"
           type="password"
-          emailIsValid={inputState.passwordIsValid}
+          isValid={inputState.passwordIsValid}
           value={inputState.password}
           onChange={passwordChangeHandler}
           onBlur={validatePasswordHandler}
