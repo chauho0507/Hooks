@@ -9,7 +9,10 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const userLoggedInInfo = localStorage.getItem('isLoggedIn');
+    if (userLoggedInInfo === '1') setIsLoggedIn(true);
+  }, []);
 
   const loginHandler = () => {
     localStorage.setItem('isLoggedIn', '1');
